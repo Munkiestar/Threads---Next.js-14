@@ -3,6 +3,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UserValidation } from "@/lib/validations/user";
+import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 
 import { z } from "zod";
@@ -22,6 +23,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { isBase64Image } from "@/lib/utils";
 import { useUploadThing } from "@/lib/uploadthing";
 
+import { updateUser } from "@/lib/actions/user.actions";
+
 interface UProps {
   user: {
     id: string;
@@ -38,6 +41,9 @@ const AccountProfile = ({ user, btnTitle }: UProps) => {
   const [files, setFiles] = useState<File[]>([]);
   const { startUpload } = useUploadThing("media");
 
+  const router = useRouter();
+  const pathname = usePathname();
+
   const form = useForm({
     resolver: zodResolver(UserValidation),
     defaultValues: {
@@ -52,7 +58,6 @@ const AccountProfile = ({ user, btnTitle }: UProps) => {
     const blob = values.profile_photo;
 
     const hasImageChanged = isBase64Image(blob);
-
     if (hasImageChanged) {
       const imgRes = await startUpload(files);
       //@ts-ignore
@@ -62,7 +67,21 @@ const AccountProfile = ({ user, btnTitle }: UProps) => {
       }
     }
 
-    // TODO: update user profile
+    //  update user profile
+    await updateUser({
+      name: values.name,
+      path: pathname,
+      username: values.username,
+      userId: user.id,
+      bio: values.bio,
+      image: values.profile_photo,
+    });
+
+    if (pathname === "/profile/edit") {
+      router.back();
+    } else {
+      router.push("/");
+    }
   };
 
   const handleImageChange = (
