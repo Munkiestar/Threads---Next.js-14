@@ -4,7 +4,7 @@ import { fetchUser } from "@/lib/actions/user.actions";
 import PostThread from "@/components/forms/PostThread";
 
 const Page = async () => {
-  const user = currentUser();
+  const user = await currentUser();
 
   if (!user) return null;
 
@@ -12,7 +12,7 @@ const Page = async () => {
 
   console.log("userInfo: ", userInfo);
 
-  // if (!userInfo?.onboarded) redirect("/onboarding");
+  if (!userInfo?.onboarded) redirect("/onboarding");
 
   return (
     <>
