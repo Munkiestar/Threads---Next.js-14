@@ -26,4 +26,8 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## Technologies:
 
+- Next.js 14 [link](https://nextjs.org/)
 - Clerk Auth [link](https://clerk.com/docs/quickstarts/nextjs)
+- React Hook Form [link](https://react-hook-form.com/)
+- Zod [link](https://zod.dev/)
+- shacdn/ui [link](https://ui.shadcn.com/docs/installation/next)
