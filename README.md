@@ -31,3 +31,4 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - React Hook Form [link](https://react-hook-form.com/)
 - Zod [link](https://zod.dev/)
 - shacdn/ui [link](https://ui.shadcn.com/docs/installation/next)
+- uploadthing [link](https://docs.uploadthing.com/api-reference/react)
