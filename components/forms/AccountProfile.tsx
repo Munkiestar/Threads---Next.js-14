@@ -6,7 +6,7 @@ import { UserValidation } from "@/lib/validations/user";
 import Image from "next/image";
 
 import { z } from "zod";
-import { ChangeEvent } from "react";
+import { ChangeEvent, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -33,6 +33,8 @@ interface UProps {
 }
 
 const AccountProfile = ({ user, btnTitle }: UProps) => {
+  const [files, setFiles] = useState<File[]>([]);
+
   const form = useForm({
     resolver: zodResolver(UserValidation),
     defaultValues: {
@@ -50,13 +52,29 @@ const AccountProfile = ({ user, btnTitle }: UProps) => {
   };
 
   const handleImageChange = (
-    e: ChangeEvent,
+    e: ChangeEvent<HTMLInputElement>,
     fieldChange: (value: string) => void,
   ) => {
     e.preventDefault();
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(e);
+
+    const fileReader = new FileReader();
+
+    if (e.target.files && e.target.files.length) {
+      const file = e.target.files[0];
+
+      setFiles(Array.from(e.target.files));
+
+      if (!file.type.includes("image")) return;
+
+      fileReader.onload = async (e) => {
+        const imageDataUrl = e.target?.result?.toString() || "";
+
+        fieldChange(imageDataUrl);
+      };
+
+      // change the file image
+      fileReader.readAsDataURL(file);
+    }
   };
 
   return (
