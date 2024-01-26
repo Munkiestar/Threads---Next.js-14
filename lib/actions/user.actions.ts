@@ -13,14 +13,14 @@ interface Params {
   path: string;
 }
 
-export async function updateUser({
+export const updateUser = async ({
   userId,
   bio,
   name,
   path,
   username,
   image,
-}: Params): Promise<void> {
+}: Params): Promise<void> => {
   try {
     await connectToDB();
 
@@ -39,7 +39,21 @@ export async function updateUser({
     if (path === "/profile/edit") {
       revalidatePath(path);
     }
-  } catch (error: any) {
-    throw new Error(`Failed to create/update user: ${error.message}`);
+  } catch (err: any) {
+    throw new Error(`Failed to create/update user: ${err.message}`);
   }
-}
+};
+
+export const fetchUser = async (userId: string) => {
+  try {
+    await connectToDB();
+
+    return await User.findOne({ id: userId });
+    //   .populate({
+    //   path: "communities",
+    //   model: "Community",
+    // });
+  } catch (err: any) {
+    throw new Error(`Failed to fetch user: ${err.message}`);
+  }
+};
