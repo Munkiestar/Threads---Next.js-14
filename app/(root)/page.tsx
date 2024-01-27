@@ -1,5 +1,6 @@
 import { fetchPosts } from "@/lib/actions/thread.actions";
 import { currentUser } from "@clerk/nextjs";
+import ThreadCard from "@/components/cards/ThreadCard";
 
 const Home = async () => {
   const result = await fetchPosts(1, 30);
@@ -17,7 +18,7 @@ const Home = async () => {
             <ThreadCard
               key={post._id}
               id={post._id}
-              currentUserId={user?.id}
+              currentUserId={user?.id || ""}
               parentId={post?.parentId}
               content={post?.text}
               author={post?.author}
